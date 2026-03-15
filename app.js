@@ -1,4 +1,5 @@
 let workLogs = JSON.parse(localStorage.getItem("workLogs")) || {};
+let scheduleType = localStorage.getItem("scheduleType") || null;
 let currentViewDate = new Date();
 let selectedDateStr = "";
 
@@ -649,4 +650,38 @@ document.addEventListener("click", function (e) {
 	}
 });
 
-window.onload = renderCalendar;
+// ===== ВИБІР ТИПУ ГРАФІКА =====
+function showScheduleModal() {
+	document.getElementById("schedule-modal").classList.add("active");
+}
+
+function hideScheduleModal() {
+	document.getElementById("schedule-modal").classList.remove("active");
+}
+
+function selectScheduleType(type) {
+	scheduleType = type;
+	localStorage.setItem("scheduleType", type);
+	hideScheduleModal();
+	renderCalendar();
+
+	const names = {
+		fixed: "Фіксований 2-змінний",
+		free: "Вільний денний",
+		flexible: "Гнучкий посмінний",
+	};
+	alert(`✅ Обрано: ${names[type]}\n\nВи можете змінити графік у меню ⋮`);
+}
+
+function changeScheduleType() {
+	toggleMenu();
+	showScheduleModal();
+}
+
+// ===== ІНІЦІАЛІЗАЦІЯ =====
+window.onload = function () {
+	if (!scheduleType) {
+		showScheduleModal();
+	}
+	renderCalendar();
+};

@@ -33,9 +33,11 @@
 						<button onclick="clearAllData()" class="menu-item btn-danger">
 							🗑️ Очистити
 						</button>
+						<button onclick="changeScheduleType()" class="menu-item">
+							⚙️ Змінити графік
+						</button>
 					</div>
 
-					<!-- Подменю - Звіт -->
 					<div id="report-menu" class="export-submenu" style="display: none">
 						<button onclick="openSubmenu('main-menu')" class="back-btn">
 							❮ Назад
@@ -134,6 +136,42 @@
 			</main>
 
 			<button class="fab" onclick="openToday()">＋</button>
+		</div>
+
+		<!-- Модальне вікно вибору типу графіка -->
+		<div id="schedule-modal" class="modal schedule-modal">
+			<div class="modal-content schedule-content">
+				<div class="schedule-header">
+					<h2>👋 Вітаємо!</h2>
+					<p>Оберіть ваш тип графіка роботи</p>
+				</div>
+
+				<div class="schedule-options">
+					<button class="schedule-option" onclick="selectScheduleType('fixed')">
+						<div class="option-icon">🏭</div>
+						<div class="option-info">
+							<div class="option-title">Фіксований 2-змінний</div>
+							<div class="option-desc">Пн-Пт, 1-ша або 2-га зміна по 8 год</div>
+						</div>
+					</button>
+
+					<button class="schedule-option disabled" disabled>
+						<div class="option-icon">☀️</div>
+						<div class="option-info">
+							<div class="option-title">Вільний денний</div>
+							<div class="option-desc">Скоро...</div>
+						</div>
+					</button>
+
+					<button class="schedule-option disabled" disabled>
+						<div class="option-icon">🔄</div>
+						<div class="option-info">
+							<div class="option-title">Гнучкий посмінний</div>
+							<div class="option-desc">Скоро...</div>
+						</div>
+					</button>
+				</div>
+			</div>
 		</div>
 
 		<div id="edit-modal" class="modal">
