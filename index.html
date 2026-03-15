@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="uk">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+		/>
+		<title>WorkHours</title>
+		<link rel="icon" type="image/svg+xml" href="icon.svg" />
+		<link rel="apple-touch-icon" href="icon.svg" />
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<div class="app-container">
+			<header>
+				<div class="month-nav">
+					<button onclick="changeMonth(-1)">❮</button>
+					<h2 id="current-month-year">Березень 2026</h2>
+					<button onclick="changeMonth(1)">❯</button>
+					<button class="menu-btn" onclick="toggleMenu()">⋮</button>
+				</div>
+
+				<div id="export-menu" class="export-menu">
+					<!-- Главное меню -->
+					<div id="main-menu" class="export-main-menu">
+						<button onclick="openSubmenu('report-menu')" class="menu-item">
+							📊 Звіт
+						</button>
+						<button onclick="openSubmenu('backup-menu')" class="menu-item">
+							💾 Бекап
+						</button>
+						<button onclick="clearAllData()" class="menu-item btn-danger">
+							🗑️ Очистити
+						</button>
+					</div>
+
+					<!-- Подменю - Звіт -->
+					<div id="report-menu" class="export-submenu" style="display: none">
+						<button onclick="openSubmenu('main-menu')" class="back-btn">
+							❮ Назад
+						</button>
+
+						<div class="export-section">
+							<div class="export-sublabel">Місяць</div>
+							<button onclick="downloadReport()">💾 Скачать</button>
+							<button onclick="shareReport()">📤 Поділитися</button>
+						</div>
+
+						<hr
+							style="
+								margin: 8px 0;
+								border: none;
+								border-top: 1px solid rgba(255, 255, 255, 0.1);
+							"
+						/>
+
+						<div class="export-section">
+							<div class="export-sublabel">Рік</div>
+							<button onclick="downloadYearReport()">💾 Скачать</button>
+							<button onclick="shareYearReport()">📤 Поділитися</button>
+						</div>
+					</div>
+
+					<!-- Подменю - Бекап -->
+					<div id="backup-menu" class="export-submenu" style="display: none">
+						<button onclick="openSubmenu('main-menu')" class="back-btn">
+							❮ Назад
+						</button>
+
+						<div class="export-section">
+							<div class="export-sublabel">Експорт даних</div>
+							<button onclick="downloadBackup()">💾 Зберегти файл</button>
+						</div>
+
+						<hr
+							style="
+								margin: 8px 0;
+								border: none;
+								border-top: 1px solid rgba(255, 255, 255, 0.1);
+							"
+						/>
+
+						<div class="export-section">
+							<div class="export-sublabel">Імпорт даних</div>
+							<button
+								onclick="uploadBackup()"
+								title="Повністю замінить всі поточні дані на дані з файлу"
+							>
+								📂 Завантажити файл
+								<span class="btn-hint">замінить всі дані</span>
+							</button>
+							<button
+								onclick="mergeBackup()"
+								class="btn-secondary"
+								title="Додати нові записи та оновити існуючі"
+							>
+								🔀 Об'єднати з файлом
+								<span class="btn-hint">додати + оновити</span>
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="stats-grid">
+					<div class="stat-card">
+						<span class="label">Зміни</span>
+						<span id="stat-shifts" class="value">0</span>
+					</div>
+					<div class="stat-card">
+						<span class="label">Понаднорм.</span>
+						<span id="stat-overtime" class="value">0</span>
+					</div>
+					<div class="stat-card highlight">
+						<span class="label">Всього год.</span>
+						<span id="stat-total" class="value">0</span>
+					</div>
+				</div>
+			</header>
+
+			<main>
+				<div class="calendar-card">
+					<div class="weekdays">
+						<div>Пн</div>
+						<div>Вт</div>
+						<div>Ср</div>
+						<div>Чт</div>
+						<div>Пт</div>
+						<div>Сб</div>
+						<div>Нд</div>
+					</div>
+					<div id="calendar-grid" class="calendar-grid"></div>
+				</div>
+			</main>
+
+			<button class="fab" onclick="openToday()">＋</button>
+		</div>
+
+		<div id="edit-modal" class="modal">
+			<div class="modal-content">
+				<div class="modal-handle"></div>
+				<h3 id="modal-date">Дата</h3>
+
+				<div class="form-group">
+					<label>Тип зміни</label>
+					<select id="input-shift" onchange="toggleOvertimeVisibility()">
+						<option value="-1">❌ Не відпрацьовано</option>
+						<option value="0">🏖️ Вихідний</option>
+						<option value="1">🌅 1 зміна (06:00 - 14:00)</option>
+						<option value="2">🌆 2 зміна (14:00 - 22:00)</option>
+					</select>
+				</div>
+
+				<div class="form-group" id="overtime-group">
+					<label>Надгодини (макс. 8 год)</label>
+					<div class="ot-container">
+						<input
+							type="number"
+							id="input-overtime"
+							min="0"
+							max="6"
+							placeholder="0"
+							oninput="
+								if (this.value.length > 1) this.value = this.value.slice(0, 1);
+								if (this.value > 6) this.value = 6;
+							"
+						/>
+						<div class="chips">
+							<button type="button" onclick="setOT(4)">+4</button>
+							<button type="button" onclick="setOT(5)">+5</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal-btns">
+					<button onclick="closeModal()" class="btn-cancel">Скасувати</button>
+					<button onclick="saveData()" class="btn-save">Зберегти</button>
+				</div>
+			</div>
+		</div>
+
+		<script src="app.js"></script>
+	</body>
+</html>
