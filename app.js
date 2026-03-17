@@ -680,6 +680,14 @@ function changeScheduleType() {
 
 // ===== ІНІЦІАЛІЗАЦІЯ =====
 window.onload = function () {
+	// Реєструємо Service Worker для PWA
+	if ("serviceWorker" in navigator) {
+		navigator.serviceWorker
+			.register("./sw.js")
+			.then(() => console.log("SW registered"))
+			.catch((err) => console.log("SW error:", err));
+	}
+
 	if (!scheduleType) {
 		showScheduleModal();
 	}
