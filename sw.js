@@ -1,10 +1,12 @@
-const CACHE_NAME = "workhours-v1";
+const CACHE_NAME = "workhours-v2";
 const urlsToCache = [
 	"./",
 	"./index.html",
 	"./style.css",
 	"./app.js",
 	"./icon.svg",
+	"./icon-192.png",
+	"./icon-512.png",
 	"./manifest.json",
 ];
 
