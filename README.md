@@ -20,7 +20,7 @@ WorkHours provides a calendar-based workflow for recording shifts, overtime, and
 
 ## Tech stack
 
-HTML5 · CSS3 · JavaScript · LocalStorage · Service Worker · Web Share API
+HTML5 | CSS3 | JavaScript | LocalStorage | Service Worker | Web Share API
 
 ## Run locally
 
@@ -46,6 +46,10 @@ icon.*           Application icons
 ## Privacy
 
 Work records remain in the browser's local storage unless the user explicitly exports or shares them.
+
+## Contributing
+
+Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) for the development workflow, testing expectations, and privacy guidelines. Reproducible bugs can be submitted through the repository's structured bug-report form.
 
 ## Author
 
